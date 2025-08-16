@@ -2,9 +2,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 import express, { type Request, Response, NextFunction } from "express";
+import cors from "cors"; // <-- Add this import
 import { registerRoutes } from "./routes";
 
 const app = express();
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://samad-frontend.vercel.app" // <-- Add your Vercel domain here
+  ],
+  credentials: true
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
