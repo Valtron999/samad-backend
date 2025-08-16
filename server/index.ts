@@ -9,7 +9,7 @@ const app = express();
 app.use(cors({
   origin: [
     "http://localhost:5173",
-    "https://samad-frontend.vercel.app" // <-- Add your Vercel domain here
+    "https://samad-6ogx8lsa4-trons-projects-cebadc57.vercel.app"
   ],
   credentials: true
 }));
