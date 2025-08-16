@@ -1,3 +1,4 @@
+import type { SpotifyStats } from "../shared/schema";
 import { 
   type User, type InsertUser,
   type Track, type InsertTrack,
@@ -6,8 +7,8 @@ import {
   type MerchProduct, type InsertMerchProduct,
   type MerchOrder, type InsertMerchOrder,
   type GalleryImage, type InsertGalleryImage,
-  type SpotifyStats, type TicketTier
-} from "@shared/schema";
+  type TicketTier
+} from "../shared/schema";
 import { randomUUID } from "crypto";
 
 export interface IStorage {

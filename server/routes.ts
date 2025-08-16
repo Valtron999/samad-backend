@@ -2,7 +2,7 @@ import type { Express } from "express";
 import express from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import type { SpotifyStats } from "@shared/schema";
+import type { SpotifyStats } from "../shared/schema";
 import multer from "multer";
 import path from "path";
 import fs from "fs";
@@ -52,9 +52,10 @@ export async function registerRoutes(app: Express, spotifyService: any): Promise
 
   app.post("/api/merch", upload.single("image"), async (req, res) => {
     try {
+      const file = (req as typeof req & { file?: any }).file;
       const product = await storage.createMerchProduct({
         ...req.body,
-        imageUrl: req.file ? `/uploads/${req.file.filename}` : null,
+        imageUrl: file ? `/uploads/${file.filename}` : null,
         jumiaLink: req.body.jumiaLink || null,
       });
       res.status(201).json(product);
