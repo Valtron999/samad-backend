@@ -2,7 +2,6 @@
 type = "nodejs"
 
 [phases.install]
-# Install all dependencies including devDependencies, cache in /tmp instead of node_modules/.cache
 command = "npm ci --cache /tmp/npm-cache"
 
 [phases.build]
