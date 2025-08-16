@@ -1,18 +1,28 @@
+[project]
+type = "nodejs"
+
 [phases.setup]
-packages = ["nodejs_18", "npm_9_x"]
+command = "echo 'Setup phase'"
 
 [phases.install]
-cmd = "npm install"
+# Install all dependencies including devDependencies using a safe cache
+command = "npm ci --cache /tmp/npm-cache"
 
 [phases.build]
-cmd = "npm run build"
+# Build your project
+command = "npm run build"
 
 [phases.start]
-cmd = "npm run start"
+# Start your server
+command = "npm run start"
 
 [env]
-NODE_ENV = "production"
+# Add any environment variables here if needed
+# Example: NODE_ENV = "production"
 
-[caches]
-# Only cache node_modules, avoid .cache to prevent EBUSY
-paths = ["node_modules"]
+[cache]
+# Cache node_modules (excluding .cache) and dist folder
+paths = [
+  "node_modules",
+  "dist"
+]
