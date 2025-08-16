@@ -1,0 +1,18 @@
+[phases.setup]
+packages = ["nodejs_18", "npm_9_x"]
+
+[phases.install]
+cmd = "npm install"
+
+[phases.build]
+cmd = "npm run build"
+
+[phases.start]
+cmd = "npm run start"
+
+[env]
+NODE_ENV = "production"
+
+[caches]
+# Only cache node_modules, avoid .cache to prevent EBUSY
+paths = ["node_modules"]
