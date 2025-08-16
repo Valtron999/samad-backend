@@ -48,15 +48,6 @@ app.use((req, res, next) => {
     throw err;
   });
 
-  // ONLY import and setup Vite in development
-  if (app.get("env") === "development") {
-    const { setupVite, serveStatic } = await import("./vite");
-    await setupVite(app, server);
-  } else {
-    const { serveStatic } = await import("./vite");
-    serveStatic(app);
-  }
-
   const port = parseInt(process.env.PORT || "5000", 10);
   app.listen(port, "0.0.0.0", () => {
     console.log(`Server running on port ${port}`);

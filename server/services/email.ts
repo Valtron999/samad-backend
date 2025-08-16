@@ -1,4 +1,4 @@
-import { Ticket, MerchOrder } from "@shared/schema";
+import { Ticket, MerchOrder } from "../../shared/schema";
 
 interface EmailConfig {
   service: string;
