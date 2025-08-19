@@ -64,8 +64,8 @@ export async function registerRoutes(app: Express, spotifyService: any): Promise
     }
   });
 
+  // Spotify: Top Tracks
   app.get("/api/spotify/tracks", async (req, res) => {
-    // Replace with your artist name or ID
     const artistName = "Samad";
     const artist = await spotifyService.searchArtist(artistName);
     if (!artist) return res.json([]);
@@ -73,13 +73,54 @@ export async function registerRoutes(app: Express, spotifyService: any): Promise
     res.json(tracks);
   });
 
+  // Spotify: Stats
   app.get("/api/spotify/stats", async (req, res) => {
     const artistName = "Samad";
     const stats = await spotifyService.getArtistStats(artistName);
     res.json(stats);
   });
 
-  // Gallery and Spotify stats endpoints remain unchanged
-  // Remove all ticket/payment endpoints
+  // ✅ New: Generate streaming URLs for a track
+  app.post("/api/spotify/streaming-urls", async (req, res) => {
+    try {
+      const { trackName } = req.body;
+      if (!trackName) {
+        return res.status(400).json({ error: "trackName is required" });
+      }
+
+      // Find artist first
+      const artistName = "Samad"; // adjust if needed
+      const artist = await spotifyService.searchArtist(artistName);
+      if (!artist) {
+        return res.status(404).json({ error: "Artist not found" });
+      }
+
+      // Try to find the track on Spotify
+      const track = await spotifyService.searchTrack(trackName, artist.id);
+      const spotifyUrl = track ? track.external_urls.spotify : null;
+
+      // Encode for search fallback
+      const encodedName = encodeURIComponent(`${artistName} ${trackName}`);
+
+      const urls = {
+        spotify: spotifyUrl || `https://open.spotify.com/search/${encodedName}`,
+        appleMusic: `https://music.apple.com/search?term=${encodedName}`,
+        youtubeMusic: `https://music.youtube.com/search?q=${encodedName}`,
+        soundcloud: `https://soundcloud.com/search?q=${encodedName}`,
+        audiomack: `https://audiomack.com/search/${encodedName}`,
+        boomplay: `https://www.boomplay.com/search/${encodedName}`,
+        deezer: `https://www.deezer.com/search/${encodedName}`,
+        tidal: `https://listen.tidal.com/search/${encodedName}`,
+        spinlet: null, // service mostly inactive
+        naijaloaded: `https://www.naijaloaded.com.ng/search?q=${encodedName}`,
+      };
+
+      res.json(urls);
+    } catch (error) {
+      console.error("Error generating streaming URLs:", error);
+      res.status(500).json({ error: "Failed to generate streaming URLs" });
+    }
+  });
+
   return createServer(app);
 }
